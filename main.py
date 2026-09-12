@@ -352,6 +352,34 @@ div[data-testid="column"] {
 """, unsafe_allow_html=True)
 
 
+# 見た目をオセロっぽくする
+st.markdown("""
+<style>
+.stApp {
+    background-color: #006400;
+}
+
+div.stButton > button {
+    width: 48px;
+    height: 48px;
+    padding: 0px;
+    margin: 0px;
+    border-radius: 0px;
+    font-size: 30px;
+    font-weight: bold;
+    border: 1px solid black;
+    background-color: #228B22;
+    color: black;
+}
+
+div[data-testid="column"] {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 
 if "board" not in st.session_state:
     st.session_state.board = [
