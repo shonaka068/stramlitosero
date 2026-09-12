@@ -303,26 +303,59 @@ import streamlit as st
 # #===================================================================
 
 # ボタンの見た目を調整
+# st.markdown("""
+# # <style>
+# # /* ボタンを緑にして、四角いマスにする */
+# # div.stButton > button {
+# #     width: 48px;
+# #     height: 48px;
+# #     padding: 0px;
+# #     margin: 0px;
+# #     border-radius: 0px;
+# #     font-size: 30px;
+# #     font-weight: bold;
+# #     border: 1px solid black;
+# #     background-color: #228B22;
+# #     color: black;
+# # }
+
+# # /* 列の左右の余白を減らして、ボタン同士を近づける */
+# # div[data-testid="column"] {
+# #     padding-left: 0px;
+# #     padding-right: 0px;
+# }
+# </style>
+# """, unsafe_allow_html=True)
+
+# オセロ盤っぽい見た目にする
 st.markdown("""
 <style>
-/* ボタンを緑にして、四角いマスにする */
+/* ボタンをマス目っぽくする */
 div.stButton > button {
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
     padding: 0px;
     margin: 0px;
     border-radius: 0px;
-    font-size: 30px;
+    font-size: 22px;
     font-weight: bold;
     border: 1px solid black;
     background-color: #228B22;
     color: black;
 }
 
-/* 列の左右の余白を減らして、ボタン同士を近づける */
+/* 列の左右の余白をなくして、隙間を小さくする */
 div[data-testid="column"] {
     padding-left: 0px;
     padding-right: 0px;
+}
+
+/* 画面全体の余白を少し小さくする */
+.block-container {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 </style>
 """, unsafe_allow_html=True)
