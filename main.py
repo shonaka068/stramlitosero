@@ -360,8 +360,8 @@ st.markdown("""
 }
 
 div.stButton > button {
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
     padding: 0px;
     margin: 0px;
     border-radius: 0px;
