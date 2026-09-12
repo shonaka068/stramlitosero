@@ -321,8 +321,8 @@ div.stButton > button {
 
 /* 列の左右の余白を減らして、ボタン同士を近づける */
 div[data-testid="column"] {
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 </style>
 """, unsafe_allow_html=True)
