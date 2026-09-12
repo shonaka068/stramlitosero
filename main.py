@@ -431,11 +431,11 @@ for row_index, row in enumerate(st.session_state.board):
     for col_index, col in enumerate(row):
         with cols[col_index]:
             if col == 1:
-                label = "●"
+                label="⚫"
             elif col == -1:
-                label = "○"
+                label = "⚪"
             elif (col_index, row_index) in valid_position_list:
-                label = "◎"
+                label = "🟡"
             else:
                 label = " "
 
