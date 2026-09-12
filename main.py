@@ -1,105 +1,25 @@
 import streamlit as st
-import pygame
+# import pygame
 
-pygame.init()
+# pygame.init()
 
-#関数------------------------------------------------------
 
-    #グリッド線描画
-def draw_grid():
-    for i in range (square_num):
-        #横線
-        pygame.draw.line(screen,BLACK, (0,i*square_size),(screen_width, i * square_size),3)
-        #縦線
-        pygame.draw.line(screen,BLACK,(i*square_size,0),( i *square_size , screen_height),3)
-
-#盤面描写
-def draw_board():    
-    for row_index,row in enumerate(board):
-         for col_index,col in enumerate(row):
-            if col ==1:
-                pygame.draw.circle(screen,BLACK,(col_index*square_size+40,row_index*square_size+40),35)
-            elif col==-1:
-                pygame.draw.circle(screen,WHITE,(col_index*square_size+40,row_index*square_size+40),35)
-
-#石を置く場所取得
-def get_validation_positions(): 
-    valid_position_list=[]
-    for row in range(square_num):
-        for col in range(square_num):
-            #石を置いてない場所のチェック
-            if board[row][col]==0:
-                for vx,vy in vec_table:
-                    x=vx+col
-                    y=vy+row
-                    #マス範囲内、かつプレイヤーと異なる石がある場合、その方向は引き続きチェック
-                    if 0<=x<square_num and 0<=y<square_num and board[y][x]==-player:
-                        while True:
-                            x+=vx
-                            y+=vy
-                            #プレイヤーの石とことなる石がある場合、その方向は引き続きチェック
-                            if 0<=x<square_num and 0<=y<square_num and board[y][x]==-player:
-                                continue
-                            #プレイヤーの石と同色の石がある場合、石を置けるためインデックスを保存
-                            elif 0<=x<square_num and 0<=y<square_num and board[y][x]==player:
-                                valid_position_list.append((col,row))
-                                break
-                            else:
-                                break
-    return valid_position_list
-
-#石をひっくり返す
-def flip_pieces(col,row):
-    for vx, vy in vec_table:
-        flip_list=[]
-        x=vx+col
-        y=vy+row
-        while 0<=x<square_num and 0<=y<square_num and board[y][x]==-player:
-            flip_list.append((x,y))
-            x+=vx
-            y+=vy
-            if 0<=x<square_num and 0<=y<square_num and board[y][x]==player:
-                for flip_x,flip_y in flip_list:
-                    board[flip_y][flip_x]=player
-
-#-------------------------------------------------------------------
-
-#ウィンドウ作成
-screen_width=640
-screen_height=640
-screen=pygame.display.set_mode((screen_width,screen_height))
-pygame.display.set_caption("オセロゲーム")
-
-#マス目設定
-square_num=8
-square_size=screen_width//square_num
-
-#FPSS設定
-FPS=60
-clock=pygame.time.Clock()
-
-#色設定
-BLACK=(0,0,0)
-WHITE=(255,255,255)
-RED=(255,0,0)
-GREEN=(0,128,0)
-BLUE=(0,0,255)
-YELLOW=(255,255,0)
-
-#盤面(黒：1,白：-1)
-board=[
-    #1 2 3 4 5 6 7 8
-    [0,0,0,0,0,0,0,0,],#1
-    [0,0,0,0,0,0,0,0,],#2
-    [0,0,0,0,0,0,0,0,],#3
-    [0,0,0,-1,1,0,0,0,],#4
-    [0,0,0,1,-1,0,0,0,],#5
-    [0,0,0,0,0,0,0,0,],#6
-    [0,0,0,0,0,0,0,0,],#7
-    [0,0,0,0,0,0,0,0,]]#8
+if "board" not in st.session_state:
+    st.session_state.board = [
+        #1 2 3 4 5 6 7 8
+        [0,0,0,0,0,0,0,0,],#1
+        [0,0,0,0,0,0,0,0,],#2
+        [0,0,0,0,0,0,0,0,],#3
+        [0,0,0,-1,1,0,0,0,],#4
+        [0,0,0,1,-1,0,0,0,],#5
+        [0,0,0,0,0,0,0,0,],#6
+        [0,0,0,0,0,0,0,0,],#7
+        [0,0,0,0,0,0,0,0],#8
+    ]#8
 
 #プレイヤー
-player =1
+st.session_state.player =1
+st.session_state.game_over=False
 
 vec_table=[
     (-1,-1), #左上
@@ -112,8 +32,155 @@ vec_table=[
     (1,1),   #右下
 ]
 
+
+#関数------------------------------------------------------
+
+    #グリッド線描画
+# def draw_grid():
+    # for i in range (square_num):
+    #     #横線
+    #     pygame.draw.line(screen,BLACK, (0,i*square_size),(screen_width, i * square_size),3)
+    #     #縦線
+    #     pygame.draw.line(screen,BLACK,(i*square_size,0),( i *square_size , screen_height),3)
+
+#盤面描写
+def draw_board():    
+    # for row_index,row in enumerate(st.session_state.board):
+    #      for col_index,col in enumerate(row):
+    #         if col ==1:
+    #             pygame.draw.circle(screen,BLACK,(col_index*square_size+40,row_index*square_size+40),35)
+    #         elif col==-1:
+    #             pygame.draw.circle(screen,WHITE,(col_index*square_size+40,row_index*square_size+40),35)
+
+    for row_index,row in enumerate(st.session_state.board):
+        cols=st.columns(8)
+        for col_index,col in enumerate(row):
+            with cols[col_index]:
+
+                if col ==1:
+                    ladel="⚫"
+                elif col==-1:
+                    ladel="⚪"
+                elif (col_index,row_index) in st.session_state.valid_position_list:
+                    ladel="🟡"
+                else:
+                    ladel=""
+                if st.button(label, key=f"{col_index}_{row_index}"):
+                    st.write(f"{col_index}, {row_index} を押した")
+
+#石を置く場所取得
+def get_validation_positions(): 
+    valid_position_list=[]
+    for row in range(8):
+        for col in range(8):
+            #石を置いてない場所のチェック
+            if st.session_state.board[row][col]==0:
+                for vx,vy in vec_table:
+                    x=vx+col
+                    y=vy+row
+                    #マス範囲内、かつプレイヤーと異なる石がある場合、その方向は引き続きチェック
+                    if 0<=x<8 and 0<=y<8 and st.session_state.board[y][x]==-st.session_state.player:
+                        while True:
+                            x+=vx
+                            y+=vy
+                            #プレイヤーの石とことなる石がある場合、その方向は引き続きチェック
+                            if 0<=x<8 and 0<=y<8 and st.session_state.board[y][x]==-st.session_state.player:
+                                continue
+                            #プレイヤーの石と同色の石がある場合、石を置けるためインデックスを保存
+                            elif 0<=x<8 and 0<=y<8 and st.session_state.board[y][x]==st.session_state.player:
+                                valid_position_list.append((col,row))
+                                break
+                            else:
+                                break
+    return valid_position_list
+
+
+#石をひっくり返す
+def flip_pieces(col,row):
+    for vx, vy in vec_table:
+        flip_list=[]
+        x=vx+col
+        y=vy+row
+        while 0<=x<8 and 0<=y<8 and st.session_state.board[y][x]==-st.session_state.player:
+            flip_list.append((x,y))
+            x+=vx
+            y+=vy
+            if 0<=x<8 and 0<=y<8 and st.session_state.board[y][x]==st.session_state.player:
+                for flip_x,flip_y in flip_list:
+                    st.session_state.board[flip_y][flip_x]=st.session_state.player
+
+def reset_game():
+    st.session_state.board=[
+        #1 2 3 4 5 6 7 8
+        [0,0,0,0,0,0,0,0,],#1
+        [0,0,0,0,0,0,0,0,],#2
+        [0,0,0,0,0,0,0,0,],#3
+        [0,0,0,-1,1,0,0,0,],#4
+        [0,0,0,1,-1,0,0,0,],#5
+        [0,0,0,0,0,0,0,0,],#6
+        [0,0,0,0,0,0,0,0],#7
+        [0,0,0,0,0,0,0]#8
+    ]
+    st.session_state.player =1
+    st.session_state.game_over=False
+    st.session_state.pass_num=0
+
+
+#-------------------------------------------------------------------
+
+#ウィンドウ作成
+# screen_width=640
+# screen_height=640
+# screen=pygame.display.set_mode((screen_width,screen_height))
+# pygame.display.set_caption("オセロゲーム")
+
+#マス目設定
+# square_num=8
+# square_size=screen_width//square_num
+
+#FPSS設定
+# FPS=60
+# clock=pygame.time.Clock()
+
+#色設定
+# BLACK=(0,0,0)
+# WHITE=(255,255,255)
+# RED=(255,0,0)
+# GREEN=(0,128,0)
+# BLUE=(0,0,255)
+# YELLOW=(255,255,0)
+
+#盤面(黒：1,白：-1)
+# if "board" not in st.session_state:
+#     st.session_state.board = [
+#         #1 2 3 4 5 6 7 8
+#         [0,0,0,0,0,0,0,0,],#1
+#         [0,0,0,0,0,0,0,0,],#2
+#         [0,0,0,0,0,0,0,0,],#3
+#         [0,0,0,-1,1,0,0,0,],#4
+#         [0,0,0,1,-1,0,0,0,],#5
+#         [0,0,0,0,0,0,0,0,],#6
+#         [0,0,0,0,0,0,0,0,],#7
+#         [0,0,0,0,0,0,0,0],#8
+#     ]#8
+
+# #プレイヤー
+# st.session_state.player =1
+# st.session_state.game_over=False
+
+# vec_table=[
+#     (-1,-1), #左上
+#     (0,-1),  #上
+#     (1,-1),  #右上
+#     (-1,0),  #左
+#     (1,0),   #右
+#     (-1,1),  #左下
+#     (0,1),   #下 
+#     (1,1),   #右下
+# ]
+
 game_over=False
-pass_num=0
+st.session_state.pass_num=0
 
 #フォント設定
 font=pygame.font.SysFont(None,100,bold=False,italic=False)
