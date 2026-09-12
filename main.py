@@ -301,67 +301,14 @@ import streamlit as st
 #     clock.tick(FPS)
 
 # #===================================================================
-# pygame.quit()
 
-# st.markdown("""
-# <style>
-# .stApp {
-#     background-color: #008000;
-# }
-# </style>
-# """, unsafe_allow_html=True)
-
-# st.markdown("""
-# <style>
-# div.stButton > button {
-#     width: 42px;
-#     height: 42px;
-#     padding: 0px;
-#     margin: 0px;
-#     font-size: 22px;
-# }
-# div[data-testid="column"] {
-#     padding-left: 1px;
-#     padding-right: 1px;
-# }
-# </style>
-# """, unsafe_allow_html=True)
-
-
-# # 盤面っぽい見た目にするCSS
-# st.markdown("""
-# <style>
-# .stApp {
-#     background-color: #006400;
-# }
-# div.stButton > button {
-#     width: 48px;
-#     height: 48px;
-#     padding: 0px;
-#     margin: 0px;
-#     border-radius: 0px;
-#     font-size: 28px;
-#     font-weight: bold;
-#     border: 1px solid black;
-# }
-# div[data-testid="column"] {
-#     padding-left: 0px;
-#     padding-right: 0px;
-# }
-# </style>
-# """, unsafe_allow_html=True)
-
-
-# 見た目をオセロっぽくする
+# ボタンの見た目を調整
 st.markdown("""
 <style>
-.stApp {
-    background-color: #006400;
-}
-
+/* ボタンを緑にして、四角いマスにする */
 div.stButton > button {
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     padding: 0px;
     margin: 0px;
     border-radius: 0px;
@@ -372,14 +319,13 @@ div.stButton > button {
     color: black;
 }
 
+/* 列の左右の余白を減らして、ボタン同士を近づける */
 div[data-testid="column"] {
     padding-left: 0px;
     padding-right: 0px;
 }
 </style>
 """, unsafe_allow_html=True)
-
-
 
 if "board" not in st.session_state:
     st.session_state.board = [
