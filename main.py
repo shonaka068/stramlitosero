@@ -303,7 +303,13 @@ import streamlit as st
 # #===================================================================
 # pygame.quit()
 
-
+st.markdown("""
+<style>
+.stApp {
+    background-color: #008000;
+}
+</style>
+""", unsafe_allow_html=True)
 
 if "board" not in st.session_state:
     st.session_state.board = [
