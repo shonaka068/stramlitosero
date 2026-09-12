@@ -311,6 +311,24 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+div.stButton > button {
+    width: 42px;
+    height: 42px;
+    padding: 0px;
+    margin: 0px;
+    font-size: 22px;
+}
+div[data-testid="column"] {
+    padding-left: 1px;
+    padding-right: 1px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
 if "board" not in st.session_state:
     st.session_state.board = [
         [0,0,0,0,0,0,0,0],
