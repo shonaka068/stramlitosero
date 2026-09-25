@@ -892,7 +892,7 @@ clicked = streamlit_image_coordinates(board_img, key="board")
 # ------------------------------------------------------
 # クリック処理
 # ------------------------------------------------------
-if clicked is not None and not st.session_state.game_over:
+if clicked and isinstance(clicked, dict) and "x" in clicked and "y" in clicked and not st.session_state.game_over:
     x = clicked["x"] // SQUARE_SIZE
     y = clicked["y"] // SQUARE_SIZE
 
@@ -903,7 +903,6 @@ if clicked is not None and not st.session_state.game_over:
             st.session_state.player *= -1
             st.session_state.pass_num = 0
             st.rerun()
-
 # ------------------------------------------------------
 # 勝敗表示
 # ------------------------------------------------------
