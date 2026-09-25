@@ -887,8 +887,9 @@ st.write(f"今の手番: {'黒' if st.session_state.player == 1 else '白'}")
 st.write(f"黒: {black_num} / 白: {white_num}")
 
 board_img = make_board_image(st.session_state.board, valid_position_list)
+st.image(board_img, use_container_width=True)
 clicked = streamlit_image_coordinates(board_img, key="board")
-
+st.write(clicked)
 # ------------------------------------------------------
 # クリック処理
 # ------------------------------------------------------
