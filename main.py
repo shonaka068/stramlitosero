@@ -750,7 +750,8 @@ vec_table = [
     (-1,  0),           (1,  0),
     (-1,  1), (0,  1), (1,  1),
 ]
-
+assert len(st.session_state.board) == 8
+assert all(len(row) == 8 for row in st.session_state.board)
 # ------------------------------------------------------
 # 関数
 # ------------------------------------------------------
@@ -837,6 +838,19 @@ def make_board_image(board, valid_position_list):
 # ------------------------------------------------------
 # ゲーム処理
 # ------------------------------------------------------
+# board が壊れていたら作り直す
+if "board" not in st.session_state or not isinstance(st.session_state.board, list) or len(st.session_state.board) != 8:
+    st.session_state.board = [
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,-1,1,0,0,0],
+        [0,0,0,1,-1,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+    ]
+
 valid_position_list = get_validation_positions()
 
 black_num = sum(row.count(1) for row in st.session_state.board)
