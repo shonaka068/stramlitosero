@@ -750,8 +750,17 @@ vec_table = [
     (-1,  0),           (1,  0),
     (-1,  1), (0,  1), (1,  1),
 ]
-assert len(st.session_state.board) == 8
-assert all(len(row) == 8 for row in st.session_state.board)
+def init_board():
+    st.session_state.board = [
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,-1,1,0,0,0],
+        [0,0,0,1,-1,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+    ]
 # ------------------------------------------------------
 # 関数
 # ------------------------------------------------------
@@ -850,6 +859,8 @@ if "board" not in st.session_state or not isinstance(st.session_state.board, lis
         [0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0],
     ]
+if "board" not in st.session_state:
+    init_board()
 
 valid_position_list = get_validation_positions()
 
