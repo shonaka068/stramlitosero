@@ -252,8 +252,10 @@ import streamlit as st
 #             print(game_over)
 #         elif white_num>black_num:
 #             screen.blit(white_win_surface,(230,200))
-#             screen.blit(reset_surface,(180,400))
-#             print(game_over)
+#             scre
+# blit(reset_surface,(180,400))
+#             prin
+# ame_over)
 #         else:
 #             screen.blit(draw_surface,(230,200))
 #             screen.blit(reset_surface,(180,400))
@@ -329,37 +331,212 @@ import streamlit as st
 
 # オセロ盤っぽい見た目にする
 st.markdown("""
-<style>
-/* ボタンをマス目っぽくする */
-div.stButton > button {
-    width: 36px;
-    height: 36px;
-    padding: 0px;
-    margin: 0px;
-    border-radius: 0px;
-    font-size: 22px;
-    font-weight: bold;
-    border: 1px solid black;
-    background-color: #228B22;
-    color: black;
-}
+# <style>
+# /* ボタンをマス目っぽくする */
+# div.stButton > button {
+#     width: 36px;
+#     height: 36px;
+#     padding: 0px;
+#     margin: 0px;
+#     border-radius: 0px;
+#     font-size: 22px;
+#     font-weight: bold;
+#     border: 1px solid black;
+#     background-color: #228B22;
+#     color: black;
+# }
 
-/* 列の左右の余白をなくして、隙間を小さくする */
-div[data-testid="column"] {
-    padding-left: 0px;
-    padding-right: 0px;
-}
+# /* 列の左右の余白をなくして、隙間を小さくする */
+# div[data-testid="column"] {
+#     padding-left: 0px;
+#     padding-right: 0px;
+# }
 
-/* 画面全体の余白を少し小さくする */
-.block-container {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-</style>
-""", unsafe_allow_html=True)
+# /* 画面全体の余白を少し小さくする */
+# .block-container {
+#     padding-top: 1rem;
+#     padding-bottom: 1rem;
+#     padding-left: 1rem;
+#     padding-right: 1rem;
+# }
+# </style>
+# """, unsafe_allow_html=True)
 
+# if "board" not in st.session_state:
+#     st.session_state.board = [
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,-1,1,0,0,0],
+#         [0,0,0,1,-1,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#     ]
+#     st.session_state.player = 1
+#     st.session_state.game_over = False
+#     st.session_state.pass_num = 0
+
+# vec_table = [
+#     (-1,-1), #左上
+#     (0,-1),  #上
+#     (1,-1),  #右上
+#     (-1,0),  #左
+#     (1,0),   #右
+#     (-1,1),  #左下
+#     (0,1),   #下
+#     (1,1),   #右下
+# ]
+
+# # ------------------------------------------------------
+# # 関数
+# # ------------------------------------------------------
+
+# # 石を置ける場所取得
+# def get_validation_positions():
+#     valid_position_list = []
+#     for row in range(8):
+#         for col in range(8):
+#             if st.session_state.board[row][col] == 0:
+#                 for vx, vy in vec_table:
+#                     x = vx + col
+#                     y = vy + row
+
+#                     if 0 <= x < 8 and 0 <= y < 8 and st.session_state.board[y][x] == -st.session_state.player:
+#                         while True:
+#                             x += vx
+#                             y += vy
+
+#                             if 0 <= x < 8 and 0 <= y < 8 and st.session_state.board[y][x] == -st.session_state.player:
+#                                 continue
+
+#                             elif 0 <= x < 8 and 0 <= y < 8 and st.session_state.board[y][x] == st.session_state.player:
+#                                 valid_position_list.append((col, row))
+#                                 break
+#                             else:
+#                                 break
+#     return valid_position_list
+
+# # 石をひっくり返す
+# def flip_pieces(col, row):
+#     for vx, vy in vec_table:
+#         flip_list = []
+#         x = vx + col
+#         y = vy + row
+
+#         while 0 <= x < 8 and 0 <= y < 8 and st.session_state.board[y][x] == -st.session_state.player:
+#             flip_list.append((x, y))
+#             x += vx
+#             y += vy
+
+#             if 0 <= x < 8 and 0 <= y < 8 and st.session_state.board[y][x] == st.session_state.player:
+#                 for flip_x, flip_y in flip_list:
+#                     st.session_state.board[flip_y][flip_x] = st.session_state.player
+
+# # 盤面を元に戻す
+# def reset_game():
+#     st.session_state.board = [
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,-1,1,0,0,0],
+#         [0,0,0,1,-1,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#     ]
+#     st.session_state.player = 1
+#     st.session_state.game_over = False
+#     st.session_state.pass_num = 0
+
+# # ------------------------------------------------------
+# # ゲーム処理
+# # ------------------------------------------------------
+
+# valid_position_list = get_validation_positions()
+# st.session_state.valid_position_list = valid_position_list
+
+# # 石を置ける場所がない場合
+# if len(valid_position_list) < 1 and not st.session_state.game_over:
+#     st.session_state.pass_num += 1
+#     if st.session_state.pass_num >= 2:
+#         st.session_state.game_over = True
+#     else:
+#         st.session_state.player *= -1
+#         st.write("パスです")
+#         st.rerun()
+
+# # 盤面の石の数を数える
+# black_num = sum(row.count(1) for row in st.session_state.board)
+# white_num = sum(row.count(-1) for row in st.session_state.board)
+# black_num_white_num = black_num + white_num
+
+# # すべて埋まったら終了
+# if black_num_white_num == 64:
+#     st.session_state.game_over = True
+
+# # ------------------------------------------------------
+# # 表示
+# # ------------------------------------------------------
+
+# st.write(f"今の手番: {'黒' if st.session_state.player == 1 else '白'}")
+# st.write(f"黒: {black_num}  白: {white_num}")
+
+# # 盤面表示
+# for row_index, row in enumerate(st.session_state.board):
+#     cols = st.columns(8)
+#     for col_index, col in enumerate(row):
+#         with cols[col_index]:
+#             if col == 1:
+#                 label="⚫"
+#             elif col == -1:
+#                 label = "⚪"
+#             elif (col_index, row_index) in valid_position_list:
+#                 label = "🟡"
+#             else:
+#                 label = " "
+
+#             if st.button(label, key=f"{col_index}_{row_index}"):
+#                 if not st.session_state.game_over:
+#                     if (col_index, row_index) in valid_position_list:
+#                         flip_pieces(col_index, row_index)
+#                         st.session_state.board[row_index][col_index] = st.session_state.player
+#                         st.session_state.player *= -1
+#                         st.session_state.pass_num = 0
+#                         st.rerun()
+
+# # 勝敗表示
+# if st.session_state.game_over:
+#     if black_num > white_num:
+#         st.write("Black win!!")
+#     elif white_num > black_num:
+#         st.write("White win!!")
+#     else:
+#         st.write("Draw...")
+
+#     if st.button("リセット"):
+#         reset_game()
+#         st.rerun()
+
+
+import streamlit as st
+from PIL import Image, ImageDraw
+
+# ------------------------------------------------------
+# 画面・色の設定
+# ------------------------------------------------------
+BOARD_SIZE = 640
+SQUARE_NUM = 8
+SQUARE_SIZE = BOARD_SIZE // SQUARE_NUM
+
+GREEN = (34, 139, 34)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+YELLOW = (255, 255, 0)
+
+# ------------------------------------------------------
+# 初期化
+# ------------------------------------------------------
 if "board" not in st.session_state:
     st.session_state.board = [
         [0,0,0,0,0,0,0,0],
@@ -376,62 +553,52 @@ if "board" not in st.session_state:
     st.session_state.pass_num = 0
 
 vec_table = [
-    (-1,-1), #左上
-    (0,-1),  #上
-    (1,-1),  #右上
-    (-1,0),  #左
-    (1,0),   #右
-    (-1,1),  #左下
-    (0,1),   #下
-    (1,1),   #右下
+    (-1, -1), (0, -1), (1, -1),
+    (-1,  0),           (1,  0),
+    (-1,  1), (0,  1), (1,  1),
 ]
 
 # ------------------------------------------------------
 # 関数
 # ------------------------------------------------------
-
-# 石を置ける場所取得
 def get_validation_positions():
     valid_position_list = []
-    for row in range(8):
-        for col in range(8):
+    for row in range(SQUARE_NUM):
+        for col in range(SQUARE_NUM):
             if st.session_state.board[row][col] == 0:
                 for vx, vy in vec_table:
-                    x = vx + col
-                    y = vy + row
+                    x = col + vx
+                    y = row + vy
 
-                    if 0 <= x < 8 and 0 <= y < 8 and st.session_state.board[y][x] == -st.session_state.player:
+                    if 0 <= x < SQUARE_NUM and 0 <= y < SQUARE_NUM and st.session_state.board[y][x] == -st.session_state.player:
                         while True:
                             x += vx
                             y += vy
 
-                            if 0 <= x < 8 and 0 <= y < 8 and st.session_state.board[y][x] == -st.session_state.player:
+                            if 0 <= x < SQUARE_NUM and 0 <= y < SQUARE_NUM and st.session_state.board[y][x] == -st.session_state.player:
                                 continue
-
-                            elif 0 <= x < 8 and 0 <= y < 8 and st.session_state.board[y][x] == st.session_state.player:
+                            elif 0 <= x < SQUARE_NUM and 0 <= y < SQUARE_NUM and st.session_state.board[y][x] == st.session_state.player:
                                 valid_position_list.append((col, row))
                                 break
                             else:
                                 break
     return valid_position_list
 
-# 石をひっくり返す
 def flip_pieces(col, row):
     for vx, vy in vec_table:
         flip_list = []
-        x = vx + col
-        y = vy + row
+        x = col + vx
+        y = row + vy
 
-        while 0 <= x < 8 and 0 <= y < 8 and st.session_state.board[y][x] == -st.session_state.player:
+        while 0 <= x < SQUARE_NUM and 0 <= y < SQUARE_NUM and st.session_state.board[y][x] == -st.session_state.player:
             flip_list.append((x, y))
             x += vx
             y += vy
 
-            if 0 <= x < 8 and 0 <= y < 8 and st.session_state.board[y][x] == st.session_state.player:
-                for flip_x, flip_y in flip_list:
-                    st.session_state.board[flip_y][flip_x] = st.session_state.player
+        if 0 <= x < SQUARE_NUM and 0 <= y < SQUARE_NUM and st.session_state.board[y][x] == st.session_state.player:
+            for flip_x, flip_y in flip_list:
+                st.session_state.board[flip_y][flip_x] = st.session_state.player
 
-# 盤面を元に戻す
 def reset_game():
     st.session_state.board = [
         [0,0,0,0,0,0,0,0],
@@ -447,70 +614,91 @@ def reset_game():
     st.session_state.game_over = False
     st.session_state.pass_num = 0
 
+def make_board_image(board, valid_position_list):
+    img = Image.new("RGB", (BOARD_SIZE, BOARD_SIZE), GREEN)
+    draw = ImageDraw.Draw(img)
+
+    # 線を描く
+    for i in range(9):
+        p = i * SQUARE_SIZE
+        draw.line((p, 0, p, BOARD_SIZE), fill=BLACK, width=3)
+        draw.line((0, p, BOARD_SIZE, p), fill=BLACK, width=3)
+
+    # 石と置ける場所を描く
+    for row in range(SQUARE_NUM):
+        for col in range(SQUARE_NUM):
+            x1 = col * SQUARE_SIZE
+            y1 = row * SQUARE_SIZE
+            x2 = x1 + SQUARE_SIZE
+            y2 = y1 + SQUARE_SIZE
+
+            if board[row][col] == 1:
+                draw.ellipse((x1 + 5, y1 + 5, x2 - 5, y2 - 5), fill=BLACK)
+            elif board[row][col] == -1:
+                draw.ellipse((x1 + 5, y1 + 5, x2 - 5, y2 - 5), fill=WHITE, outline=BLACK)
+            elif (col, row) in valid_position_list:
+                draw.ellipse((x1 + 22, y1 + 22, x2 - 22, y2 - 22), outline=YELLOW, width=4)
+
+    return img
+
 # ------------------------------------------------------
 # ゲーム処理
 # ------------------------------------------------------
-
 valid_position_list = get_validation_positions()
-st.session_state.valid_position_list = valid_position_list
 
-# 石を置ける場所がない場合
+black_num = sum(row.count(1) for row in st.session_state.board)
+white_num = sum(row.count(-1) for row in st.session_state.board)
+
+if black_num + white_num == 64:
+    st.session_state.game_over = True
+
 if len(valid_position_list) < 1 and not st.session_state.game_over:
     st.session_state.pass_num += 1
     if st.session_state.pass_num >= 2:
         st.session_state.game_over = True
     else:
         st.session_state.player *= -1
-        st.write("パスです")
         st.rerun()
-
-# 盤面の石の数を数える
-black_num = sum(row.count(1) for row in st.session_state.board)
-white_num = sum(row.count(-1) for row in st.session_state.board)
-black_num_white_num = black_num + white_num
-
-# すべて埋まったら終了
-if black_num_white_num == 64:
-    st.session_state.game_over = True
 
 # ------------------------------------------------------
 # 表示
 # ------------------------------------------------------
+st.title("オセロゲーム")
 
 st.write(f"今の手番: {'黒' if st.session_state.player == 1 else '白'}")
-st.write(f"黒: {black_num}  白: {white_num}")
+st.write(f"黒: {black_num} / 白: {white_num}")
 
-# 盤面表示
-for row_index, row in enumerate(st.session_state.board):
-    cols = st.columns(8)
-    for col_index, col in enumerate(row):
-        with cols[col_index]:
-            if col == 1:
-                label="⚫"
-            elif col == -1:
-                label = "⚪"
-            elif (col_index, row_index) in valid_position_list:
-                label = "🟡"
-            else:
-                label = " "
+board_img = make_board_image(st.session_state.board, valid_position_list)
+st.image(board_img, use_container_width=True)
 
-            if st.button(label, key=f"{col_index}_{row_index}"):
-                if not st.session_state.game_over:
-                    if (col_index, row_index) in valid_position_list:
-                        flip_pieces(col_index, row_index)
-                        st.session_state.board[row_index][col_index] = st.session_state.player
+# ------------------------------------------------------
+# クリックして置く部分
+# ------------------------------------------------------
+if not st.session_state.game_over:
+    st.write("置きたいマスのボタンを押してね")
+
+    for row in range(8):
+        cols = st.columns(8)
+        for col in range(8):
+            with cols[col]:
+                if st.button(" ", key=f"{row}_{col}"):
+                    if (col, row) in valid_position_list:
+                        flip_pieces(col, row)
+                        st.session_state.board[row][col] = st.session_state.player
                         st.session_state.player *= -1
                         st.session_state.pass_num = 0
                         st.rerun()
 
+# ------------------------------------------------------
 # 勝敗表示
+# ------------------------------------------------------
 if st.session_state.game_over:
     if black_num > white_num:
-        st.write("Black win!!")
+        st.success("Black win!!")
     elif white_num > black_num:
-        st.write("White win!!")
+        st.success("White win!!")
     else:
-        st.write("Draw...")
+        st.info("Draw...")
 
     if st.button("リセット"):
         reset_game()
