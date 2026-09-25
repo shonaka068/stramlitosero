@@ -736,8 +736,13 @@ if "board" not in st.session_state:
         [0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0],
     ]
+if "player" not in st.session_state:
     st.session_state.player = 1
+
+if "game_over" not in st.session_state:
     st.session_state.game_over = False
+
+if "pass_num" not in st.session_state:
     st.session_state.pass_num = 0
 
 vec_table = [
@@ -746,8 +751,6 @@ vec_table = [
     (-1,  1), (0,  1), (1,  1),
 ]
 
-st.write(type(st.session_state.board))
-st.write(st.session_state.board)
 # ------------------------------------------------------
 # 関数
 # ------------------------------------------------------
