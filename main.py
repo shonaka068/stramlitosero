@@ -1,4 +1,4 @@
-import streamlit as st
+# import streamlit as st
 # import pygame
 
 # pygame.init()
@@ -746,6 +746,8 @@ vec_table = [
     (-1,  1), (0,  1), (1,  1),
 ]
 
+st.write(type(st.session_state.board))
+st.write(st.session_state.board)
 # ------------------------------------------------------
 # 関数
 # ------------------------------------------------------
