@@ -893,17 +893,26 @@ st.write(clicked)
 # ------------------------------------------------------
 # クリック処理
 # ------------------------------------------------------
-if clicked and isinstance(clicked, dict) and "x" in clicked and "y" in clicked and not st.session_state.game_over:
-    x = clicked["x"] // SQUARE_SIZE
-    y = clicked["y"] // SQUARE_SIZE
+if not st.session_state.game_over:
+    st.write("置きたいマスのボタンを押してね")
 
-    if 0 <= x < 8 and 0 <= y < 8:
-        if (x, y) in valid_position_list:
-            flip_pieces(x, y)
-            st.session_state.board[y][x] = st.session_state.player
-            st.session_state.player *= -1
-            st.session_state.pass_num = 0
-            st.rerun()
+    for row in range(8):
+        cols = st.columns(8)
+        for col in range(8):
+            with cols[col]:
+                # 置ける場所だけ少し分かるようにする
+                if (col, row) in valid_position_list:
+                    button_label = " "
+                else:
+                    button_label = " "
+
+                if st.button(button_label, key=f"{row}_{col}"):
+                    if (col, row) in valid_position_list:
+                        flip_pieces(col, row)
+                        st.session_state.board[row][col] = st.session_state.player
+                        st.session_state.player *= -1
+                        st.session_state.pass_num = 0
+                        st.rerun()
 # ------------------------------------------------------
 # 勝敗表示
 # ------------------------------------------------------
