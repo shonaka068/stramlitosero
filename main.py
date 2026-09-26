@@ -115,6 +115,11 @@ def count_flips(col, row):
 
     return total
 
+
+def is_corner_2x2(col, row):
+    # 盤面の4つの角にある2×2エリアなら True
+    return (col < 2 and row < 2) or (col >= 6 and row < 2) or (col < 2 and row >= 6) or (col >= 6 and row >= 6)
+
 def flip_pieces(col, row):
     for vx, vy in vec_table:
         flip_list = []
@@ -157,22 +162,24 @@ def ai_move():
     if len(valid_position_list) == 0:
         return
 
-    # 盤面にある石の数で序盤か終盤かを判断する
     total_stones = sum(row.count(1) + row.count(-1) for row in st.session_state.board)
 
     scored_moves = []
     for col, row in valid_position_list:
         flips = count_flips(col, row)
 
-        # 序盤は少ない手を選ぶ、終盤は多い手を選ぶ
-        if total_stones < 50:
+        # 序盤は少なく返す手を優先
+        if total_stones < 40:
             score = -flips
         else:
             score = flips
 
+        # 角の2×2は基本的に避ける
+        if is_corner_2x2(col, row):
+            score -= 100
+
         scored_moves.append((score, col, row))
 
-    # 点数が一番高い手を選ぶ
     scored_moves.sort(reverse=True)
     _, col, row = scored_moves[0]
 
