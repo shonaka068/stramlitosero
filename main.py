@@ -95,6 +95,26 @@ def get_validation_positions():
                                 break
     return valid_position_list
 
+def count_flips(col, row):
+    # そのマスに置いたとき、何個ひっくり返せるか数える
+    total = 0
+    for vx, vy in vec_table:
+        x = col + vx
+        y = row + vy
+        count = 0
+
+        # 相手の石が続く間は数える
+        while 0 <= x < 8 and 0 <= y < 8 and st.session_state.board[y][x] == -st.session_state.player:
+            count += 1
+            x += vx
+            y += vy
+
+        # 先に自分の石があれば、その方向は有効
+        if 0 <= x < 8 and 0 <= y < 8 and st.session_state.board[y][x] == st.session_state.player:
+            total += count
+
+    return total
+
 def flip_pieces(col, row):
     for vx, vy in vec_table:
         flip_list = []
@@ -131,24 +151,33 @@ def reset_game():
 # AIの処理
 # ------------------------------------------------------
 def ai_move():
-    # AIは白（-1）固定なので、いったん手番を白にする
     st.session_state.player = -1
-
-    # 置ける場所を調べる
     valid_position_list = get_validation_positions()
 
-    # 置ける場所がなければ何もしない
     if len(valid_position_list) == 0:
         return
 
-    # 置ける場所から1つランダムに選ぶ
-    col, row = random.choice(valid_position_list)
+    # 盤面にある石の数で序盤か終盤かを判断する
+    total_stones = sum(row.count(1) + row.count(-1) for row in st.session_state.board)
 
-    # 石をひっくり返して、白を置く
+    scored_moves = []
+    for col, row in valid_position_list:
+        flips = count_flips(col, row)
+
+        # 序盤は少ない手を選ぶ、終盤は多い手を選ぶ
+        if total_stones < 40:
+            score = -flips
+        else:
+            score = flips
+
+        scored_moves.append((score, col, row))
+
+    # 点数が一番高い手を選ぶ
+    scored_moves.sort(reverse=True)
+    _, col, row = scored_moves[0]
+
     flip_pieces(col, row)
     st.session_state.board[row][col] = st.session_state.player
-
-    # 次は黒の番にする
     st.session_state.player = 1
     st.session_state.pass_num = 0
 
