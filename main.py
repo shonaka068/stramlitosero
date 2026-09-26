@@ -150,7 +150,6 @@ def reset_game():
     st.session_state.game_over = False
     st.session_state.pass_num = 0
 
-    import random  # AIが置く場所をランダムに選ぶために使う
 
 # ------------------------------------------------------
 # AIの処理
