@@ -165,7 +165,7 @@ def ai_move():
         flips = count_flips(col, row)
 
         # 序盤は少ない手を選ぶ、終盤は多い手を選ぶ
-        if total_stones < 40:
+        if total_stones < 50:
             score = -flips
         else:
             score = flips
