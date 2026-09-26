@@ -57,6 +57,9 @@ if "game_over" not in st.session_state:
 if "pass_num" not in st.session_state:
     st.session_state.pass_num = 0
 
+if "mode" not in st.session_state:
+    st.session_state.mode = "2人プレイ"  # 最初は2人プレイにする
+
 # ------------------------------------------------------
 # 方向
 # ------------------------------------------------------
@@ -154,7 +157,7 @@ def ai_move():
 # ------------------------------------------------------
 valid_position_list = get_validation_positions()
 
-if not st.session_state.game_over and st.session_state.player == -1:
+if not st.session_state.game_over and st.session_state.mode == "1人プレイ" and st.session_state.player == -1:
     ai_move()
     st.rerun()
 
@@ -176,6 +179,12 @@ if len(valid_position_list) < 1 and not st.session_state.game_over:
 # 表示
 # ------------------------------------------------------
 st.title("オセロゲーム")
+st.session_state.mode = st.radio(
+    "プレイモードを選んでね",
+    ["1人プレイ", "2人プレイ"],
+    horizontal=True
+)
+
 st.header(f"今の手番: {'黒' if st.session_state.player == 1 else '白'}")
 st.write(f"黒: {black_num} / 白: {white_num}")
 
