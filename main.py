@@ -174,8 +174,8 @@ def ai_move():
         else:
             score = flips
 
-        # 角の2×2は基本的に避ける
-        if is_corner_2x2(col, row):
+        # 序盤だけ角の2×2を避ける
+        if total_stones < 40 and is_corner_2x2(col, row):
             score -= 100
 
         scored_moves.append((score, col, row))
