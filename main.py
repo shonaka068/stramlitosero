@@ -60,6 +60,8 @@ if "pass_num" not in st.session_state:
 if "mode" not in st.session_state:
     st.session_state.mode = "2人プレイ"  # 最初は2人プレイにする
 
+if "pass_message" not in st.session_state:
+    st.session_state.pass_message = ""
 # ------------------------------------------------------
 # 方向
 # ------------------------------------------------------
@@ -204,11 +206,14 @@ if black_num + white_num == 64:
 
 if len(valid_position_list) < 1 and not st.session_state.game_over:
     st.session_state.pass_num += 1
+    st.session_state.pass_message = f"{'黒' if st.session_state.player == 1 else '白'}はパスです"
     if st.session_state.pass_num >= 2:
         st.session_state.game_over = True
     else:
         st.session_state.player *= -1
         st.rerun()
+else:
+    st.session_state.pass_message = ""
 
 # ------------------------------------------------------
 # 表示
@@ -222,6 +227,9 @@ st.session_state.mode = st.radio(
 
 st.header(f"今の手番: {'黒' if st.session_state.player == 1 else '白'}")
 st.write(f"黒: {black_num} / 白: {white_num}")
+
+if st.session_state.pass_message:
+    st.info(st.session_state.pass_message)
 
 if st.session_state.game_over:
     if black_num > white_num:
