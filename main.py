@@ -6,7 +6,7 @@ import streamlit as st
 st.markdown("""
 <style>
 div.stButton > button {
-    width: 20px;
+    width: 40px;
     height: 20px;
     padding: 0px;
     margin: 0px;
