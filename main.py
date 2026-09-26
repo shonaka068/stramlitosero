@@ -803,16 +803,16 @@ def flip_pieces(col, row):
                 st.session_state.board[flip_y][flip_x] = st.session_state.player
 
 def reset_game():
-    st.session_state.board = [
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,-1,1,0,0,0],
-        [0,0,0,1,-1,0,0,0],
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0],
-    ]
+#     st.session_state.board = [
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,-1,1,0,0,0],
+#         [0,0,0,1,-1,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#         [0,0,0,0,0,0,0,0],
+#     ]
     st.session_state.player = 1
     st.session_state.game_over = False
     st.session_state.pass_num = 0
