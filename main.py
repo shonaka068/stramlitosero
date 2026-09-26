@@ -7,8 +7,8 @@ import random  # AIが置く場所をランダムに選ぶために使う
 st.markdown("""
 <style>
 div.stButton > button {
-    width: 45px;
-    height: 45px;
+    width: 42px;
+    height: 42px;
     padding: 0px;
     margin: 0px;
     border-radius: 0px;
