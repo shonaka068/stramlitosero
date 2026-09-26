@@ -1,4 +1,5 @@
 import streamlit as st
+import random  # AIが置く場所をランダムに選ぶために使う
 
 # ------------------------------------------------------
 # CSS
@@ -121,10 +122,41 @@ def reset_game():
     st.session_state.game_over = False
     st.session_state.pass_num = 0
 
+    import random  # AIが置く場所をランダムに選ぶために使う
+
+# ------------------------------------------------------
+# AIの処理
+# ------------------------------------------------------
+def ai_move():
+    # AIは白（-1）固定なので、いったん手番を白にする
+    st.session_state.player = -1
+
+    # 置ける場所を調べる
+    valid_position_list = get_validation_positions()
+
+    # 置ける場所がなければ何もしない
+    if len(valid_position_list) == 0:
+        return
+
+    # 置ける場所から1つランダムに選ぶ
+    col, row = random.choice(valid_position_list)
+
+    # 石をひっくり返して、白を置く
+    flip_pieces(col, row)
+    st.session_state.board[row][col] = st.session_state.player
+
+    # 次は黒の番にする
+    st.session_state.player = 1
+    st.session_state.pass_num = 0
+
 # ------------------------------------------------------
 # ゲーム処理
 # ------------------------------------------------------
 valid_position_list = get_validation_positions()
+
+if not st.session_state.game_over and st.session_state.player == -1:
+    ai_move()
+    st.rerun()
 
 black_num = sum(row.count(1) for row in st.session_state.board)
 white_num = sum(row.count(-1) for row in st.session_state.board)
