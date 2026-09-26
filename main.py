@@ -7,7 +7,7 @@ st.markdown("""
 <style>
 div.stButton > button {
     width: 60px;
-    height: 20px;
+    height: 40px;
     padding: 0px;
     margin: 0px;
     border-radius: 0px;
