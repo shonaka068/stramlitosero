@@ -144,7 +144,7 @@ if len(valid_position_list) < 1 and not st.session_state.game_over:
 # 表示
 # ------------------------------------------------------
 st.title("オセロゲーム")
-st.write(f"今の手番: {'黒' if st.session_state.player == 1 else '白'}")
+st.header(f"今の手番: {'黒' if st.session_state.player == 1 else '白'}")
 st.write(f"黒: {black_num} / 白: {white_num}")
 
 if st.session_state.game_over:
