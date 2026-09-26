@@ -194,6 +194,11 @@ def ai_move():
 # ------------------------------------------------------
 valid_position_list = get_validation_positions()
 
+# 置ける場所がないときだけパスにする
+if not st.session_state.game_over and len(valid_position_list) == 0:
+    st.session_state.pass_num += 1
+    st.session_state.pass_message = f"{'黒' if st.session_state.player == 1 else '白'}はパスです"
+
 if not st.session_state.game_over and st.session_state.mode == "1人プレイ" and st.session_state.player == -1:
     ai_move()
     st.rerun()
