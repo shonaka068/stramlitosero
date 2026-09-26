@@ -14,7 +14,7 @@ div.stButton > button {
     border: 1px solid black;
     background-color: #228B22;
     color: black;
-    font-size: 35px;
+    font-size: 40px;
     font-weight: bold;
 }
 
